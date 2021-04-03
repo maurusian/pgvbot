@@ -63,5 +63,7 @@ The options do not have to be provided seperately. They can for example be writt
 
 ## Using code for other projects
 If you want to build a similar bot for another Wiki project, and you want to use the code, feel free to do so. Please acknowledge this project by putting its name and the link to this Repo in your bot description and/or documentation. The bot could potentially also be useful as it is, for Wiki projects of other Arabic dialects.
+
 I would recommend not using the code until the abstraction layer is complete though. Once this is done, you would theoretically only need to adjust the parameter values in params.py, and do some minor adjustments in run-bot.py and run-bot.bat. The details however would depend on what you exactly want to do, and on the specifities of your Wiki project and the endemic properties of your language.
+
 For any questions regarding the usage of this bot, or any related requests, please add your question on the [Talk Page](https://ary.wikipedia.org/wiki/%D9%86%D9%82%D8%A7%D8%B4_%D8%A7%D9%84%D9%85%D8%B3%D8%AA%D8%AE%D8%AF%D9%85:Ideophagous). Feel free to write in Moroccan Darija, English, French, German or Arabic.
