@@ -1,10 +1,12 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+/lib/__pycache__/
 *.py[cod]
 *$py.class
 
 # C extensions
 *.so
+*.txt
 
 # Distribution / packaging
 .Python
@@ -14,7 +16,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+# lib/
 lib64/
 parts/
 sdist/
@@ -26,6 +28,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+apicache-py3
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -127,3 +130,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#Configurations
+user-config.py
+pywikibot.lwp
+throttle.ctrl
+
+#tests
+/tests/
