@@ -3,17 +3,22 @@ import pywikibot
 from sys import argv
 
 def validate_args(args):
+    """
+    Checks if args are valid
+    """
     for arg in args:
         if len(arg) == 0 or arg[0] != '-':
             return False
     return True
 
-def validate_page(page):
-    if len(page.title().split(':')) == 1 and page.title() not in IGNORE_LIST: #for now only content pages
-        return True
-    return False
-
 def pool_run(site,pool,target,to_replace,option_string):
+    """
+    Runs routine for a pool of pages
+    Subprograms are called depending on the
+    selected options, provided as arguments (args).
+
+    
+    """
     for page in pool:
             
         if validate_page(page):
@@ -21,7 +26,7 @@ def pool_run(site,pool,target,to_replace,option_string):
                 #call sub program to replace in text
                 print(REPLACE_FUNC_OPTION)
                     
-                r_page, counters = get_updated_page(page,TARGET,TO_REPLACE)
+                r_page, counters = get_updated_page(page,target,to_replace)
                     
                 if r_page is not None:
                     save_page(r_page,TEXT_REPLACE_MESSAGE_TEMPLATE.format(counters[0],counters[1]))
@@ -31,11 +36,11 @@ def pool_run(site,pool,target,to_replace,option_string):
             if MOVE_FUNC_OPTION in option_string:
                     
                 #call sub program to move pages
-                page = move_page(page,TARGET,TO_REPLACE)
+                page = move_page(page,target,to_replace)
                 
             if ENTRIES_FUNC_OPTION in option_string:
                 #call sub program to add new entries to each page
-                create_entries(site,page,TARGET,TO_REPLACE)
+                create_entries(site,page,target,to_replace)
                 fix_redirects(site,page)
 
 
@@ -58,44 +63,26 @@ if __name__ == '__main__':
         site = pywikibot.Site()
         if LAST_PAGES_OPTION in option_string:
             
-            #load last changed pages (30 days)
+            #load last changed
             last_changes = site.recentchanges(reverse=True,minor=False,bot=False,redirect=False,excludeuser=BOT_USERNAME)
-            pool = [pywikibot.Page(site, item['title']) for item in last_changes if item['type'] == 'edit' and item['user'] != 'PGVBot']
+            #create page pool
+            pool = [pywikibot.Page(site, item['title']) for item in last_changes if (item['type'] == 'edit' or item['type'] == 'create') and item['user'] != 'PGVBot']
             
         else:
-            #load all pages
+            #load all pages, default option
             pool = site.allpages()
-        print(len(list(pool)))
-        print(list(pool)[0])
+
+        pool_size = len(list(pool))
+        print('Pool size: '+str(pool_size))
+        
         #a test will be added here for -pgv options
 
-        #if P_OPTION in option_string:
-        TARGET = GCLAV
-        TO_REPLACE = [GLEXI,GFARS]
-        
-        for page in pool:
-            
-            if len(page.title().split(':')) == 1: #for now only content pages
-                if REPLACE_FUNC_OPTION in option_string:
-                    #call sub program to replace in text
-                    print(REPLACE_FUNC_OPTION)
-                    
-                    r_page, counters = get_updated_page(page,TARGET,TO_REPLACE)
-                    
-                    if r_page is not None:
-                        save_page(r_page,TEXT_REPLACE_MESSAGE_TEMPLATE.format(counters[0],counters[1]))
-                    else:
-                        print("no change")
-                    
-                if MOVE_FUNC_OPTION in option_string:
-                    
-                    #call sub program to move pages
-                    page = move_page(page,TARGET,TO_REPLACE)
+        if G_OPTION in option_string:
+            TARGET = GCLAV
+            TO_REPLACE = [GLEXI,GFARS,GSTRA]
+
+            #run for all pages in pool
+            pool_run(site,pool,TARGET,TO_REPLACE,option_string)
                 
-                if ENTRIES_FUNC_OPTION in option_string:
-                    #call sub program to add new entries to each page
-                    create_entries(site,page,TARGET,TO_REPLACE)
-                    fix_redirects(site,page)
-            
         #""" 
         

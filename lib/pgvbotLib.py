@@ -24,6 +24,7 @@ def adjust_file_code(text,target,char_to_replace):
     using generic target and char_to_replace variables
     """
     text_parts = text.split('|')
+    #counters = [0]*len(char_to_replace)
     GLEXI_COUNTER = text_parts[-1].count(GLEXI)
     GFARS_COUNTER = text_parts[-1].count(GFARS)
     
@@ -60,12 +61,12 @@ def get_updated_page(page,target,chars_to_replace):
     TOTAL_GFARS_COUNTER = 0
     for line in lines:
         #print(line)
-        if 'ملف:' in line:
+        if FILE_CODE_START_TEXT in line:
             line, GLEXI_COUNTER, GFARS_COUNTER = adjust_file_code(line,target,chars_to_replace)
             TOTAL_GLEXI_COUNTER+=GLEXI_COUNTER
             TOTAL_GFARS_COUNTER+=GFARS_COUNTER
             
-        elif 'مقال_مهضور' not in line:
+        elif AUDIO_ARTICLE_TAG_TEXT not in line:
             
             GLEXI_COUNTER = line.count(GLEXI)
             TOTAL_GLEXI_COUNTER+=GLEXI_COUNTER
@@ -78,12 +79,11 @@ def get_updated_page(page,target,chars_to_replace):
                 line = line.replace(GFARS,GCLAV)
                 
         else:
-            #print(line)
+            #do nothing specific for now
             pass
 
         new_text+=line+'\n'
 
-    #print(new_text)
     if TOTAL_GLEXI_COUNTER != 0 or TOTAL_GFARS_COUNTER != 0:
         page.text = new_text
         return page, [TOTAL_GLEXI_COUNTER, TOTAL_GFARS_COUNTER]
@@ -92,6 +92,9 @@ def get_updated_page(page,target,chars_to_replace):
 
 def move_page(page,target,chars_to_replace):
     """
+    Adjusts title with target character and moves
+    page to a new title, provided the new title
+    is different from the old one
     """
     title = page.title()
     
@@ -112,9 +115,9 @@ def move_page(page,target,chars_to_replace):
         for i in range(GFARS_COUNT):
             new_title = new_title.replace(GFARS,GCLAV)
 
-        print('running title test')
+        
         if new_title != title:
-            print('starting process')
+            print('Starting move process')
             new_page = pywikibot.Page(site, new_title)
             if len(new_page.text) == 0:
                 message = PAGE_TRANSFER_MESSAGE_TEMPLATE.format(title, new_title)
@@ -131,6 +134,10 @@ def move_page(page,target,chars_to_replace):
 
 def create_entries(site,page,target,chars_to_replace):
     """
+    Adds new entry pages for a given page, if they
+    do not already exist, based on variants obtained
+    by replacing target character with characters
+    in chars_to_replace.
     """
     title = page.title().strip().replace(" ","_")
     
@@ -146,7 +153,7 @@ def create_entries(site,page,target,chars_to_replace):
             new_page = pywikibot.Page(site, title)
             if len(new_page.text) == 0:
                 print('creating page: '+title)
-                new_page.text = '#تحويل [['+main_entry+']]'
+                new_page.text = MOVE_TEXT+' [['+main_entry+']]'
                 message = comment_message.format(main_entry)
                 new_page.save(message)
 
@@ -157,7 +164,7 @@ def create_entries(site,page,target,chars_to_replace):
             new_page = pywikibot.Page(site, title)
             if len(new_page.text) == 0:
                 print('creating page: '+title)
-                new_page.text = '#تحويل [['+main_entry+']]'
+                new_page.text = MOVE_TEXT+' [['+main_entry+']]'
                 message = comment_message.format(main_entry)
                 new_page.save(message)
 
@@ -166,6 +173,10 @@ def create_entries(site,page,target,chars_to_replace):
             print(sys.exc_info())
 
 def get_all_redirects(site,page):
+    """
+    Implements a recursive process to obtain all pages
+    in the redirect tree for a given page
+    """
     redirects = None
     try:
         redirects = list(page.getReferences(filter_redirects=True))
@@ -186,12 +197,19 @@ def get_all_redirects(site,page):
         return
 
 def log_write(site,message):
+    """
+    Write to the log page, which is the user page
+    of the bot
+    """
     user_page = pywikibot.Page(site,BOT_USER_PAGE_TITLE)
     user_page.text += '\n\n\n'+str(datetime.now())+'\n\n\n'+message
     save_page(user_page,LOG_LINE_MESSAGE)
     #user_page.save(LOG_LINE_MESSAGE)
 
 def fix_redirects(site,page):
+    """
+    Corrects redirect issues, such as serial redirects
+    """
     title = page.title()
 
     #page = pywikibot.Page(site, title)
@@ -200,7 +218,7 @@ def fix_redirects(site,page):
 
         
         if redirects is not None:
-            transfer_text = MOVE_TEXT + ' [['+title+']]\n\n[[تصنيف:تحويلات مقالات]]'
+            transfer_text = MOVE_TEXT + ' [['+title+']]\n\n'+REDIRECT_PAGE_CAT_CODE
             for redirect in redirects:
                 if redirect.text != transfer_text:
                     redirect.text = transfer_text
@@ -211,7 +229,18 @@ def fix_redirects(site,page):
                         log_write(site,sys.exc_info())
                         print(sys.exc_info())
 
+def validate_page(page):
+    """
+    Verifies if a page is valid for treatment
+    or not. For now, only content pages are
+    valid for treatment
+    """
+    if len(page.title().split(':')) == 1 and page.title() not in IGNORE_LIST: #for now only content pages
+        return True
+    return False
+
 def save_page(page,comment):
     """
+    Saves page to wikipedia with comment
     """
     page.save(comment)
