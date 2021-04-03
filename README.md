@@ -1,6 +1,8 @@
 # PGVBot
 
+
 Language: Python3.9
+
 Purpose: Wikipedia Bot
 
 This bot was created to fulfill a specific need in the Moroccan Darija Wikipedia (ary.wikipedia.org). Its functionalities however could be generalized to other projects. The details are explained below. Given that a G sound exists in Moroccan Darija, but not in Standard Arabic, a corresponding letter is needed to represent that sound. Unfortunately, since Moroccan Darija has yet to be standardized, there's no consensus on which G character to use, considering that there are several commonly used:
