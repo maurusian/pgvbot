@@ -5,7 +5,7 @@ Language: Python3.9
 
 Purpose: Wikipedia Bot
 
-This bot was created to fulfill a specific need in the Moroccan Darija Wikipedia (ary.wikipedia.org). Its functionalities however could be generalized to other projects. The details are explained below. Given that a G sound exists in Moroccan Darija, but not in Standard Arabic, a corresponding letter is needed to represent that sound. Unfortunately, since Moroccan Darija has yet to be standardized, there's no consensus on which G character to use, considering that there are several commonly used:
+This bot was created to fulfill a specific need in the [Moroccan Darija Wikipedia](https://ary.wikipedia.org/wiki/%D8%A7%D9%84%D8%B5%D9%81%D8%AD%D8%A9_%D8%A7%D9%84%D9%84%D9%91%D9%88%D9%84%D8%A7). Its functionalities however could be generalized to other projects. The details are explained below. Given that a G sound exists in Moroccan Darija, but not in Standard Arabic, a corresponding letter is needed to represent that sound. Unfortunately, since Moroccan Darija has yet to be standardized, there's no consensus on which G character to use, considering that there are several commonly used:
 
 - GLEXI = 'ڭ' - G character found on https://www.lexilogos.com/clavier/araby.htm
 - GCLAV = 'ݣ' - G character found on many Moroccan keyboards
