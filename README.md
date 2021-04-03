@@ -1,4 +1,4 @@
-# pgvbot
+# PGVBot
 
 Language: Python3.9
 Purpose: Wikipedia Bot
@@ -48,18 +48,18 @@ The available bot options are as follows:
 
 The options do not have to be provided seperately. They can for example be written as -lrmepgv or -l -rme -pgv, in no particular order. The dash however is necessary before each letter group, otherwise the function validate_args will return False, and the bot will not run.
 
-# Future development:
+## Future development:
 
-# Urgent:
+### Urgent:
 - Checking change types when loading most recently changed pages. So far only 'edit' and 'create' are taken into account. But other change types may also be relevant.
 - Completing the abstraction layer so the bot can run for any TARGET, CHARS_TO_REPLACE pair, and for any number of characters in CHARS_TO_REPLACE, which would then be possible to quickly adjust from the main program, without changing the underlying functionalities. This would in principle also make the program more usable for other projects with other languages (see **Using code for other projects**).
 
-# Non-urgent:
+### Non-urgent:
 - Improving the functionality of adding entries, and the sub-functionality of adjusting entries, by taking X-variants of a redirect pages into accounts. This would imply taking into account the possibility of duplicate pages, which would have to be signaled in the log.
 - Improving logging, especially calls and formatting.
 - More flexible choice of number of last edited pages or time period. The bot could also save the last run-time, and run only for pages changed from that time.
 
-# Using code for other projects
+## Using code for other projects
 If you want to build a similar bot for another Wiki project, and you want to use the code, feel free to do so. Please acknowledge this project by putting its name and the link to this Repo in your bot description and/or documentation. The bot could potentially also be useful as it is, for Wiki projects of other Arabic dialects.
-I would recommend not using the code until the abstraction is complete though.
-For any questions regarding the usage of this bot, or if anything is unclear, please add your question on the [Talk Page](https://ary.wikipedia.org/wiki/%D9%86%D9%82%D8%A7%D8%B4_%D8%A7%D9%84%D9%85%D8%B3%D8%AA%D8%AE%D8%AF%D9%85:Ideophagous). Feel free to write in Moroccan Darija, English, French, German or Arabic.
+I would recommend not using the code until the abstraction layer is complete though. Once this is done, you would theoretically only need to adjust the parameter values in params.py, and do some minor adjustments in run-bot.py and run-bot.bat. The details however would depend on what you exactly want to do, and on the specifities of your Wiki project and the endemic properties of your language.
+For any questions regarding the usage of this bot, or any related requests, please add your question on the [Talk Page](https://ary.wikipedia.org/wiki/%D9%86%D9%82%D8%A7%D8%B4_%D8%A7%D9%84%D9%85%D8%B3%D8%AA%D8%AE%D8%AF%D9%85:Ideophagous). Feel free to write in Moroccan Darija, English, French, German or Arabic.
