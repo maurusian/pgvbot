@@ -1,1 +1,0 @@
-run_bot.py login -all -l -mre -g
