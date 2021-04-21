@@ -1,6 +1,8 @@
 from lib.pgvbotLib import *
 import pywikibot
+from copy import deepcopy
 from sys import argv
+
 
 def validate_args(args):
     """
@@ -19,30 +21,36 @@ def pool_run(site,pool,target,to_replace,option_string):
 
     
     """
+    i = 1
+    pool_size = len(list(deepcopy(pool)))
     for page in pool:
-            
+        print('*********'+str(i)+'/'+str(pool_size))
+        
         if validate_page(page):
-            if REPLACE_FUNC_OPTION in option_string:
+            
+                
+            if REPLACE_FUNC_OPTION in option_string and validate_page_text(page):
                 #call sub program to replace in text
                 print(REPLACE_FUNC_OPTION)
                     
                 r_page, counters = get_updated_page(page,target,to_replace)
                     
                 if r_page is not None:
-                    save_page(r_page,TEXT_REPLACE_MESSAGE_TEMPLATE.format(counters[0],counters[1]))
+                    save_page(r_page,G_TEXT_REPLACE_MESSAGE_TEMPLATE.format(counters[0],counters[1],counters[2]))
                 else:
                     print("no change")
                     
             if MOVE_FUNC_OPTION in option_string:
                     
                 #call sub program to move pages
-                page = move_page(page,target,to_replace)
+                page = move_page(site,page,target,to_replace)
                 
             if ENTRIES_FUNC_OPTION in option_string:
                 #call sub program to add new entries to each page
+                
                 create_entries(site,page,target,to_replace)
                 fix_redirects(site,page)
-
+        i+=1
 
 
 if __name__ == '__main__':
@@ -66,13 +74,14 @@ if __name__ == '__main__':
             #load last changed
             last_changes = site.recentchanges(reverse=True,minor=False,bot=False,redirect=False,excludeuser=BOT_USERNAME)
             #create page pool
+            #NEXT: check other potential last_change types
             pool = [pywikibot.Page(site, item['title']) for item in last_changes if (item['type'] == 'edit' or item['type'] == 'create') and item['user'] != 'PGVBot']
             
         else:
             #load all pages, default option
             pool = site.allpages()
 
-        pool_size = len(list(pool))
+        pool_size = len(list(deepcopy(pool)))
         print('Pool size: '+str(pool_size))
         
         #a test will be added here for -pgv options

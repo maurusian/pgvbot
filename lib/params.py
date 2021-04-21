@@ -14,9 +14,10 @@ REPLACE_FUNC_OPTION = 'r' #run subprogram for in-text replacement
 MOVE_FUNC_OPTION = 'm' #run subprogram to move page
 ENTRIES_FUNC_OPTION = 'e' #run subprogram to add new entries
 
-TEXT_REPLACE_MESSAGE_TEMPLATE = u'پڭڤبوت بدّل {} ڭ ؤ {} گ ل ݣ' #comment template for text replacement, to be abstracted for any number or type of replacement characters
+G_TEXT_REPLACE_MESSAGE_TEMPLATE = u'پڭڤبوت بدّل {} ڭ ؤ {} گ ؤ {} ڴ ل ݣ' #comment template for text replacement, to be abstracted for any number or type of replacement characters
 PAGE_TRANSFER_MESSAGE_TEMPLATE = u"پݣڤبوت حول {} ل [[{}]]" #comment template for page transfer
 FIX_REDIRECT_MESSAGE_TEMPLATE = u"پڭڤبوت قاد تّحويل ديال لپاج" #comment for page entry adjustment
+ADD_NEW_ENTRY_MESSAGE_TEMPLATE = u'پڭڤبوت زاد دخلة جديدة ل لپاج {}'
 CIRCULAR_REDIRECT_MESSAGE_TEMPLATE = u'لپاج [[{}]] كتدي ل راسها ؤلا غادي تولي تدّي ل راسها يلا بدّلها ب پڭڤبوت' #log message for circular redirect error
 
 
@@ -31,4 +32,7 @@ LOG_LINE_MESSAGE = u'پڭڤبوت زاد سطر ف لّوڭ' #comment for log en
 
 REDIRECT_PAGE_CAT_CODE = '[[تصنيف:تحويلات مقالات]]' #category code for transfer page
 
-IGNORE_LIST = ['الصفحة اللّولا'] #list of pages to be ignored by the bot
+IGNORE_LIST = ['الصفحة اللّولا'] #list of pages to be completely ignored by the bot, for all tasks
+PAGE_TYPE_IGNORE_LIST = ['قالب','تصنيف','ويكيپيديا','إدارة','مستخدم','نقاش المستخدم','باب','نقاش ويكيپيديا','نقاش'] #list of page types to be completely ignored by the bot, for all tasks
+INTEXT_LINE_IGNORE_LIST = ['[[قالب:','{{معلومات مانڭا}}','{{قالب:','[[تصنيف:','{{مقال_مهضور'] #list of sequences for which a line should be ignored for intext replacement, if found
+CATEGORY_IGNORE_LIST = ['تصنيف:ليستة د تجاهل ديال پكڤبوت'] #list of categories of pages that will be ignored for intext replacement
