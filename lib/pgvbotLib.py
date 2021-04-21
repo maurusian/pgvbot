@@ -1,6 +1,7 @@
 import pywikibot, sys
 from lib.params import *
 from datetime import datetime
+import urllib
 
 
 def cleanup(page,title):
@@ -16,7 +17,7 @@ def cleanup(page,title):
 
     return text #.replace('}}\n','}}').replace('}}','}}\n')
 
-def adjust_file_code(text,target,char_to_replace):
+def adjust_file_code(text,target,chars_to_replace):
     """
     corrects image description by replacing specific
     characters with the target character.
@@ -25,22 +26,40 @@ def adjust_file_code(text,target,char_to_replace):
     """
     text_parts = text.split('|')
     #counters = [0]*len(char_to_replace)
+    COUNTERS = []
+
+    for i in range(len(chars_to_replace)):
+        COUNTERS.append(text_parts[-1].count(chars_to_replace[i]))
+    """
     GLEXI_COUNTER = text_parts[-1].count(GLEXI)
     GFARS_COUNTER = text_parts[-1].count(GFARS)
+    """
     
-    if GLEXI_COUNTER != 0 or GFARS_COUNTER != 0:
+    if sum(COUNTERS) != 0:
 
+        for i in range(len(chars_to_replace)):
+            for j in range(COUNTERS[i]):
+                text_parts[-1] = text_parts[-1].replace(chars_to_replace[i],target)
+
+        """
         for i in range(GLEXI_COUNTER):
             text_parts[-1] = text_parts[-1].replace(GLEXI,GCLAV)
         for i in range(GFARS_COUNTER):
             text_parts[-1] = text_parts[-1].replace(GFARS,GCLAV)
-
+        """
     
         text = '|'.join(text_parts)
 
-    return text, GLEXI_COUNTER, GFARS_COUNTER
+    return text, COUNTERS
     
+def validate_line(line):
+    """
+    """
 
+    for intext_elem in INTEXT_LINE_IGNORE_LIST:
+        if intext_elem in line:
+            return False
+    return True
 
 #returns page with replaced values (if other forms of G exist)
 #returns None otherwise
@@ -57,17 +76,30 @@ def get_updated_page(page,target,chars_to_replace):
 
     lines = text.split('\n')
     new_text = ''
+    TOTAL_COUNTERS = [0]*len(chars_to_replace)
+    """
     TOTAL_GLEXI_COUNTER = 0
     TOTAL_GFARS_COUNTER = 0
+    """
     for line in lines:
         #print(line)
         if FILE_CODE_START_TEXT in line:
-            line, GLEXI_COUNTER, GFARS_COUNTER = adjust_file_code(line,target,chars_to_replace)
+            line, COUNTERS = adjust_file_code(line,target,chars_to_replace)
+            for i in range(len(TOTAL_COUNTERS)):
+                TOTAL_COUNTERS[i]+=COUNTERS[i]
+            """
             TOTAL_GLEXI_COUNTER+=GLEXI_COUNTER
             TOTAL_GFARS_COUNTER+=GFARS_COUNTER
-            
-        elif AUDIO_ARTICLE_TAG_TEXT not in line:
-            
+            """
+        elif validate_line(line):
+
+            for i in range(len(chars_to_replace)):
+                char_counter = line.count(chars_to_replace[i])
+                TOTAL_COUNTERS[i]+=char_counter
+                #for j in range(char_counter):
+                line = line.replace(chars_to_replace[i],target,char_counter)
+
+            """
             GLEXI_COUNTER = line.count(GLEXI)
             TOTAL_GLEXI_COUNTER+=GLEXI_COUNTER
             for i in range(GLEXI_COUNTER):
@@ -77,20 +109,20 @@ def get_updated_page(page,target,chars_to_replace):
             TOTAL_GFARS_COUNTER+=GFARS_COUNTER
             for i in range(GFARS_COUNTER):
                 line = line.replace(GFARS,GCLAV)
-                
+            """
         else:
             #do nothing specific for now
             pass
 
         new_text+=line+'\n'
 
-    if TOTAL_GLEXI_COUNTER != 0 or TOTAL_GFARS_COUNTER != 0:
+    if sum(TOTAL_COUNTERS) != 0:
         page.text = new_text
-        return page, [TOTAL_GLEXI_COUNTER, TOTAL_GFARS_COUNTER]
+        return page, TOTAL_COUNTERS
     else:
-        return None, [0, 0]
+        return None, [0]*len(chars_to_replace)
 
-def move_page(page,target,chars_to_replace):
+def move_page(site,page,target,chars_to_replace):
     """
     Adjusts title with target character and moves
     page to a new title, provided the new title
@@ -107,6 +139,13 @@ def move_page(page,target,chars_to_replace):
         print(title)
         new_title = title
 
+        for i in range(len(chars_to_replace)):
+            char_counter = new_title.count(chars_to_replace[i])
+                
+            for i in range(char_counter):
+                new_title = new_title.replace(chars_to_replace[i],target)
+
+        """
         GLEXI_COUNT = new_title.count(GLEXI)
         for i in range(GLEXI_COUNT):
             new_title = new_title.replace(GLEXI,GCLAV)
@@ -114,7 +153,7 @@ def move_page(page,target,chars_to_replace):
         GFARS_COUNT = new_title.count(GFARS)
         for i in range(GFARS_COUNT):
             new_title = new_title.replace(GFARS,GCLAV)
-
+        """
         
         if new_title != title:
             print('Starting move process')
@@ -141,32 +180,45 @@ def create_entries(site,page,target,chars_to_replace):
     """
     title = page.title().strip().replace(" ","_")
     
-    if GCLAV in page.title():
+    if target in page.title():
         try:
             main_entry = title
-            GCLAV_COUNT = title.count(GCLAV)
-            for i in range(GCLAV_COUNT):
-                title = title.replace(GCLAV,GLEXI)
-            GFARS_COUNT = title.count(GFARS)
-            for i in range(GFARS_COUNT):
-                title = title.replace(GFARS,GLEXI)
-            new_page = pywikibot.Page(site, title)
-            if len(new_page.text) == 0:
-                print('creating page: '+title)
-                new_page.text = MOVE_TEXT+' [['+main_entry+']]'
-                message = comment_message.format(main_entry)
-                new_page.save(message)
 
-            GLEXI_COUNT = title.count(GLEXI)
-            for i in range(GLEXI_COUNT):
-                title = title.replace(GLEXI,GFARS)
             
-            new_page = pywikibot.Page(site, title)
-            if len(new_page.text) == 0:
-                print('creating page: '+title)
-                new_page.text = MOVE_TEXT+' [['+main_entry+']]'
-                message = comment_message.format(main_entry)
-                new_page.save(message)
+            target_COUNT = title.count(target)
+
+            for i in range(len(chars_to_replace)):
+                #replace target character with variant i
+                for j in range(target_COUNT):
+                    title = title.replace(target,chars_to_replace[i])
+
+                #replace each variant j with variant i, for j != i
+                for j in range(len(chars_to_replace)):
+                    if chars_to_replace[j] != chars_to_replace[i]:
+                        char_COUNT = title.count(chars_to_replace[j])
+                        for k in range(char_COUNT):
+                            title = title.replace(chars_to_replace[j],chars_to_replace[i])
+
+            
+                new_page = pywikibot.Page(site, title)
+                if len(new_page.text) == 0:
+                    print('creating page entry: '+title)
+                    new_page.text = MOVE_TEXT+' [['+main_entry+']]\n\n'+REDIRECT_PAGE_CAT_CODE
+                    message = ADD_NEW_ENTRY_MESSAGE_TEMPLATE.format(main_entry)
+                    new_page.save(message)
+
+                """
+                GLEXI_COUNT = title.count(GLEXI)
+                for i in range(GLEXI_COUNT):
+                    title = title.replace(GLEXI,GFARS)
+                
+                new_page = pywikibot.Page(site, title)
+                if len(new_page.text) == 0:
+                    print('creating page: '+title)
+                    new_page.text = MOVE_TEXT+' [['+main_entry+']]'
+                    message = comment_message.format(main_entry)
+                    new_page.save(message)
+                """
 
         except:
             print('Entry creation failed for entry '+title)
@@ -235,12 +287,44 @@ def validate_page(page):
     or not. For now, only content pages are
     valid for treatment
     """
-    if len(page.title().split(':')) == 1 and page.title() not in IGNORE_LIST: #for now only content pages
+
+    if page.title() in IGNORE_LIST or MOVE_TEXT in page.text:
+        return False
+
+
+    page_double_dot_parts = page.title().split(':')
+    
+    if len(page_double_dot_parts) == 1: #for now only content pages
+        return True
+    elif len(page_double_dot_parts) > 1 and page_double_dot_parts[0] not in PAGE_TYPE_IGNORE_LIST:
         return True
     return False
+
+def validate_page_text(page):
+    """
+    Verifies if a page is valid for intext treatment
+    or not, by checking the presence of filter
+    categories.
+    """
+
+    for category in CATEGORY_IGNORE_LIST:
+        if category in page.text:
+            return False
+
+    return True
 
 def save_page(page,comment):
     """
     Saves page to wikipedia with comment
     """
-    page.save(comment)
+    try:
+        page.save(comment)
+    except:
+        print("Could not save page "+urllib.parse.quote_plus('https://ary.wikipedia.org/wiki/'+page.title().replace(' ','_')))
+        site = pywikibot.Site()
+        log_message = '\n\n[['+page.title()+']] عطات هاد ليرور\n'+str(sys.exc_info())
+        try:
+            log_write(site,log_message)
+        except:
+            print("could not write to log")
+            print(sys.exc_info())
