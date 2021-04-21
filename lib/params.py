@@ -18,7 +18,7 @@ G_TEXT_REPLACE_MESSAGE_TEMPLATE = u'پڭڤبوت بدّل {} ڭ ؤ {} گ ؤ {} �
 PAGE_TRANSFER_MESSAGE_TEMPLATE = u"پݣڤبوت حول {} ل [[{}]]" #comment template for page transfer
 FIX_REDIRECT_MESSAGE_TEMPLATE = u"پڭڤبوت قاد تّحويل ديال لپاج" #comment for page entry adjustment
 ADD_NEW_ENTRY_MESSAGE_TEMPLATE = u'پڭڤبوت زاد دخلة جديدة ل لپاج {}'
-CIRCULAR_REDIRECT_MESSAGE_TEMPLATE = u'لپاج [[{}]] كتدي ل راسها ؤلا غادي تولي تدّي ل راسها يلا بدّلها ب پڭڤبوت' #log message for circular redirect error
+ERROR_MESSAGE_TEMPLATE = u'لپاج [[{}]] عطات هاد ليرور\n' #log message for circular redirect error
 
 
 MOVE_TEXT = u'#تحويل' #code start in transfer page
