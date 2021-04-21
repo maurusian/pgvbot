@@ -233,9 +233,13 @@ def get_all_redirects(site,page):
     try:
         redirects = list(page.getReferences(filter_redirects=True))
     except:
-        log_message = CIRCULAR_REDIRECT_MESSAGE_TEMPLATE.format(page.title())
-        log_write(site,log_message)
-        print(sys.exc_info())
+        log_message = ERROR_MESSAGE_TEMPLATE.format(page.title())+sys.exc_info()
+        try:
+            log_write(site,log_message)
+            print(sys.exc_info())
+        except:
+            print("could not write to log")
+            print(sys.exc_info())
     
     if redirects is not None and len(redirects)>0:
         #print(len(redirects))
@@ -278,8 +282,13 @@ def fix_redirects(site,page):
                         redirect.save(FIX_REDIRECT_MESSAGE_TEMPLATE)
                     except:
                         #log_message = CIRCULAR_REDIRECT_MESSAGE_TEMPLATE.format(redirect.title())
-                        log_write(site,sys.exc_info())
-                        print(sys.exc_info())
+                        log_message = ERROR_MESSAGE_TEMPLATE.format(redirect.title())+sys.exc_info()
+                        try:
+                            log_write(site,log_message)
+                            print(sys.exc_info())
+                        except:
+                            print("could not write to log")
+                            print(sys.exc_info())
 
 def validate_page(page):
     """
@@ -322,7 +331,7 @@ def save_page(page,comment):
     except:
         print("Could not save page "+urllib.parse.quote_plus('https://ary.wikipedia.org/wiki/'+page.title().replace(' ','_')))
         site = pywikibot.Site()
-        log_message = '\n\n[['+page.title()+']] عطات هاد ليرور\n'+str(sys.exc_info())
+        log_message = ERROR_MESSAGE_TEMPLATE.format(page.title())+str(sys.exc_info())
         try:
             log_write(site,log_message)
         except:
