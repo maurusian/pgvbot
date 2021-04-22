@@ -19,6 +19,7 @@ PAGE_TRANSFER_MESSAGE_TEMPLATE = u"پݣڤبوت حول {} ل [[{}]]" #comment te
 FIX_REDIRECT_MESSAGE_TEMPLATE = u"پڭڤبوت قاد تّحويل ديال لپاج" #comment for page entry adjustment
 ADD_NEW_ENTRY_MESSAGE_TEMPLATE = u'پڭڤبوت زاد دخلة جديدة ل لپاج {}'
 ERROR_MESSAGE_TEMPLATE = u'لپاج [[{}]] عطات هاد ليرور\n' #log message for circular redirect error
+POTENTIAL_DUPLICATE_TEMPLATE = u'لپاج [[{}]] تقدر تكون مضوبلة'
 
 
 MOVE_TEXT = u'#تحويل' #code start in transfer page

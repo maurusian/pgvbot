@@ -250,8 +250,12 @@ def get_page_variants(site,page,target,chars_to_replace):
                 #for k in range(char_COUNT):
                 title = title.replace(chars_to_replace[j],chars_to_replace[i])
 
-            
-        variants.append(pywikibot.Page(site, title))
+        new_page = pywikibot.Page(site, title)
+        if new_page.text == '' or TRANSFER_TEXT in new_page.text:
+            variants.append(pywikibot.Page(site, title))
+        else:
+            log_message = ERROR_MESSAGE_TEMPLATE.format(new_page.title())+'\n'+POTENTIAL_DUPLICATE_TEMPLATE.format(page.title())
+            log_write(site,log_message)
     return variants
 
 def get_page_list_variants(site,page_list,target,chars_to_replace):
