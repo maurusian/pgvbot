@@ -97,7 +97,7 @@ def get_updated_page(page,target,chars_to_replace):
                 char_counter = line.count(chars_to_replace[i])
                 TOTAL_COUNTERS[i]+=char_counter
                 #for j in range(char_counter):
-                line = line.replace(chars_to_replace[i],target,char_counter)
+                line = line.replace(chars_to_replace[i],target)
 
             """
             GLEXI_COUNTER = line.count(GLEXI)
@@ -140,10 +140,10 @@ def move_page(site,page,target,chars_to_replace):
         new_title = title
 
         for i in range(len(chars_to_replace)):
-            char_counter = new_title.count(chars_to_replace[i])
+            #char_counter = new_title.count(chars_to_replace[i])
                 
-            for i in range(char_counter):
-                new_title = new_title.replace(chars_to_replace[i],target)
+            #for i in range(char_counter):
+            new_title = new_title.replace(chars_to_replace[i],target)
 
         """
         GLEXI_COUNT = new_title.count(GLEXI)
@@ -185,19 +185,19 @@ def create_entries(site,page,target,chars_to_replace):
             main_entry = title
 
             
-            target_COUNT = title.count(target)
+            #target_COUNT = title.count(target)
 
             for i in range(len(chars_to_replace)):
                 #replace target character with variant i
-                for j in range(target_COUNT):
-                    title = title.replace(target,chars_to_replace[i])
+                #for j in range(target_COUNT):
+                title = title.replace(target,chars_to_replace[i])
 
                 #replace each variant j with variant i, for j != i
                 for j in range(len(chars_to_replace)):
                     if chars_to_replace[j] != chars_to_replace[i]:
-                        char_COUNT = title.count(chars_to_replace[j])
-                        for k in range(char_COUNT):
-                            title = title.replace(chars_to_replace[j],chars_to_replace[i])
+                        #char_COUNT = title.count(chars_to_replace[j])
+                        #for k in range(char_COUNT):
+                        title = title.replace(chars_to_replace[j],chars_to_replace[i])
 
             
                 new_page = pywikibot.Page(site, title)
@@ -223,6 +223,51 @@ def create_entries(site,page,target,chars_to_replace):
         except:
             print('Entry creation failed for entry '+title)
             print(sys.exc_info())
+
+def has_g_char(page,target,chars_to_replace):
+    chars = chars_to_replace+[target]
+    for char in chars:
+        if char in page.title():
+            return True
+    return False
+
+def get_page_variants(site,page,target,chars_to_replace):
+    variants = []
+
+    if not has_g_char(page,target,chars_to_replace):
+        return variants
+
+    
+    for i in range(len(chars_to_replace)):
+        #replace target character with variant i
+                
+        title = page.title().replace(target,chars_to_replace[i])
+
+        #replace each variant j with variant i, for j != i
+        for j in range(len(chars_to_replace)):
+            if chars_to_replace[j] != chars_to_replace[i]:
+                #char_COUNT = title.count(chars_to_replace[j])
+                #for k in range(char_COUNT):
+                title = title.replace(chars_to_replace[j],chars_to_replace[i])
+
+            
+        variants.append(pywikibot.Page(site, title))
+    return variants
+
+def get_page_list_variants(site,page_list,target,chars_to_replace):
+    total_variants = []
+    page_list_titles = [page.title() for page in page_list]
+
+    for page in page_list:
+        variants = get_page_variants(site,page,target,chars_to_replace)
+        page_list_titles += [variant.title() for variant in total_variants if variant.title() not in page_list_titles]
+        for variant in variants:
+            if variant.title() not in page_list_titles:
+                total_variants.append(variant)
+
+    return total_variants
+        
+
 
 def get_all_redirects(site,page):
     """
@@ -262,7 +307,7 @@ def log_write(site,message):
     save_page(user_page,LOG_LINE_MESSAGE)
     #user_page.save(LOG_LINE_MESSAGE)
 
-def fix_redirects(site,page):
+def fix_redirects(site,page,target,chars_to_replace):
     """
     Corrects redirect issues, such as serial redirects
     """
@@ -274,6 +319,7 @@ def fix_redirects(site,page):
 
         
         if redirects is not None:
+            redirects = get_page_list_variants(site,redirects,target,chars_to_replace)
             transfer_text = MOVE_TEXT + ' [['+title+']]\n\n'+REDIRECT_PAGE_CAT_CODE
             for redirect in redirects:
                 if redirect.text != transfer_text:

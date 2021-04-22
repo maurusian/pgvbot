@@ -49,7 +49,7 @@ def pool_run(site,pool,target,to_replace,option_string):
                 #call sub program to add new entries to each page
                 
                 create_entries(site,page,target,to_replace)
-                fix_redirects(site,page)
+                fix_redirects(site,page,target,to_replace)
         i+=1
 
 
@@ -75,7 +75,7 @@ if __name__ == '__main__':
             last_changes = site.recentchanges(reverse=True,minor=False,bot=False,redirect=False,excludeuser=BOT_USERNAME)
             #create page pool
             #NEXT: check other potential last_change types
-            pool = [pywikibot.Page(site, item['title']) for item in last_changes if (item['type'] == 'edit' or item['type'] == 'create') and item['user'] != 'PGVBot']
+            pool = [pywikibot.Page(site, item['title']) for item in last_changes if (item['type'] == 'edit' or item['type'] == 'new') and item['user'] != 'PGVBot']
             
         else:
             #load all pages, default option
