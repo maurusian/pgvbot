@@ -251,7 +251,7 @@ def get_page_variants(site,page,target,chars_to_replace):
                 title = title.replace(chars_to_replace[j],chars_to_replace[i])
 
         new_page = pywikibot.Page(site, title)
-        if new_page.text == '' or TRANSFER_TEXT in new_page.text:
+        if new_page.text == '' or MOVE_TEXT in new_page.text:
             variants.append(pywikibot.Page(site, title))
         else:
             log_message = ERROR_MESSAGE_TEMPLATE.format(new_page.title())+'\n'+POTENTIAL_DUPLICATE_TEMPLATE.format(page.title())
