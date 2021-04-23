@@ -55,6 +55,7 @@ The options do not have to be provided seperately. They can for example be writt
 ### Urgent:
 - Find out if P and V need a similar treatment. For this purpose, build a task that explores the character set on ARY Wikipedia.
 
+
 ### Non-urgent:
 - Improving logging, especially calls and formatting.
 - More flexible choice of number of last edited pages or time period. The bot could also save the last run-time, and run only for pages changed from that time.

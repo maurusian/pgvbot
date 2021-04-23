@@ -22,6 +22,7 @@ ERROR_MESSAGE_TEMPLATE = u'لپاج [[{}]] عطات هاد ليرور\n' #log me
 POTENTIAL_DUPLICATE_TEMPLATE = u'لپاج [[{}]] تقدر تكون مضوبلة'
 
 
+
 MOVE_TEXT = u'#تحويل' #code start in transfer page
 FILE_CODE_START_TEXT = 'ملف:' #code start in file code
 AUDIO_ARTICLE_TAG_TEXT = 'مقال_مهضور' #tag for audio article
