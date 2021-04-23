@@ -53,10 +53,10 @@ The options do not have to be provided seperately. They can for example be writt
 ## Future development:
 
 ### Urgent:
-- Checking change types when loading most recently changed pages. So far only 'edit' and 'create' are taken into account. But other change types may also be relevant.
+- Find out if P and V need a similar treatment. For this purpose, build a task that explores the character set on ARY Wikipedia.
+
 
 ### Non-urgent:
-- Improving the functionality of adding entries, and the sub-functionality of adjusting entries, by taking X-variants of a redirect pages into accounts. This would imply taking into account the possibility of duplicate pages, which would have to be signaled in the log.
 - Improving logging, especially calls and formatting.
 - More flexible choice of number of last edited pages or time period. The bot could also save the last run-time, and run only for pages changed from that time.
 
