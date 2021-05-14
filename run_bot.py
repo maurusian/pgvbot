@@ -2,6 +2,7 @@ from lib.pgvbotLib import *
 import pywikibot
 from copy import deepcopy
 from sys import argv
+from custom_pool import page_list
 
 
 def validate_args(args):
@@ -13,7 +14,7 @@ def validate_args(args):
             return False
     return True
 
-def pool_run(site,pool,target,to_replace,option_string):
+def pool_run(site, pool, target, list_to_replace1, list_to_replace2, option_string):
     """
     Runs routine for a pool of pages
     Subprograms are called depending on the
@@ -33,23 +34,31 @@ def pool_run(site,pool,target,to_replace,option_string):
                 #call sub program to replace in text
                 print(REPLACE_FUNC_OPTION)
                     
-                r_page, counters = get_updated_page(page,target,to_replace)
+                r_page, counters = get_updated_page(page,target,list_to_replace1)
                     
                 if r_page is not None:
-                    save_page(r_page,G_TEXT_REPLACE_MESSAGE_TEMPLATE.format(counters[0],counters[1],counters[2]))
+                    save_page(r_page,G_TEXT_REPLACE_MESSAGE_TEMPLATE.format(counters[0],list_to_replace1[0],counters[1],list_to_replace1[1]))
                 else:
-                    print("no change")
+                    print("no change from list 1")
+
+                r_page, counters = get_updated_page(page,target,list_to_replace2)
+                    
+                if r_page is not None:
+                    save_page(r_page,G_TEXT_REPLACE_MESSAGE_TEMPLATE.format(counters[0],list_to_replace2[0],counters[1],list_to_replace2[1]))
+                else:
+                    print("no change from list 2")
                     
             if MOVE_FUNC_OPTION in option_string:
                     
                 #call sub program to move pages
-                page = move_page(site,page,target,to_replace)
+                page = move_page(site,page,target,list_to_replace1)
+                page = move_page(site,page,target,list_to_replace2)
                 
             if ENTRIES_FUNC_OPTION in option_string:
                 #call sub program to add new entries to each page
                 
-                create_entries(site,page,target,to_replace)
-                fix_redirects(site,page,target,to_replace)
+                create_entries(site,page,target,list_to_replace1)
+                fix_redirects(site,page,target,list_to_replace1)
         i+=1
 
 
@@ -72,10 +81,14 @@ if __name__ == '__main__':
         if LAST_PAGES_OPTION in option_string:
             
             #load last changed
-            last_changes = site.recentchanges(reverse=True,minor=False,bot=False,redirect=False,excludeuser=BOT_USERNAME)
+            last_changes = site.recentchanges(reverse=True,minor=False,bot=False,redirect=False,top_only=True)
             #create page pool
             #NEXT: check other potential last_change types
             pool = [pywikibot.Page(site, item['title']) for item in last_changes if (item['type'] == 'edit' or item['type'] == 'new') and item['user'] != 'PGVBot']
+            
+        elif CUSTOM_PAGES_OPTIONS in option_string:
+            
+            pool = [pywikibot.Page(site, title.strip()) for title in page_list.strip().split()]
             
         else:
             #load all pages, default option
@@ -88,10 +101,11 @@ if __name__ == '__main__':
 
         if G_OPTION in option_string:
             TARGET = GCLAV
-            TO_REPLACE = [GLEXI,GFARS,GSTRA]
+            LIST_TO_REPLACE1 = [GLEXI,GFARS]
+            LIST_TO_REPLACE2 = [GSTRA,GFAKE]
 
             #run for all pages in pool
-            pool_run(site,pool,TARGET,TO_REPLACE,option_string)
+            pool_run(site, pool, TARGET, LIST_TO_REPLACE1, LIST_TO_REPLACE2, option_string)
                 
         #""" 
         
