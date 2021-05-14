@@ -56,9 +56,10 @@ def pool_run(site, pool, target, list_to_replace1, list_to_replace2, option_stri
                 
             if ENTRIES_FUNC_OPTION in option_string:
                 #call sub program to add new entries to each page
-                
+
                 create_entries(site,page,target,list_to_replace1)
                 fix_redirects(site,page,target,list_to_replace1)
+
         i+=1
 
 
@@ -84,7 +85,9 @@ if __name__ == '__main__':
             last_changes = site.recentchanges(reverse=True,minor=False,bot=False,redirect=False,top_only=True)
             #create page pool
             #NEXT: check other potential last_change types
+
             pool = [pywikibot.Page(site, item['title']) for item in last_changes if (item['type'] == 'edit' or item['type'] == 'new') and item['user'] != 'PGVBot']
+
             
         elif CUSTOM_PAGES_OPTIONS in option_string:
             

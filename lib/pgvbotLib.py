@@ -36,10 +36,9 @@ def adjust_file_code(text,target,chars_to_replace):
     """
     
     if sum(COUNTERS) != 0:
-
         for i in range(len(chars_to_replace)):
-            for j in range(COUNTERS[i]):
-                text_parts[-1] = text_parts[-1].replace(chars_to_replace[i],target)
+            #for j in range(COUNTERS[i]):
+            text_parts[-1] = text_parts[-1].replace(chars_to_replace[i],target)
 
         """
         for i in range(GLEXI_COUNTER):
@@ -99,6 +98,7 @@ def get_updated_page(page,target,chars_to_replace):
                 #for j in range(char_counter):
                 line = line.replace(chars_to_replace[i],target)
 
+
             """
             GLEXI_COUNTER = line.count(GLEXI)
             TOTAL_GLEXI_COUNTER+=GLEXI_COUNTER
@@ -141,9 +141,9 @@ def move_page(site,page,target,chars_to_replace):
 
         for i in range(len(chars_to_replace)):
             #char_counter = new_title.count(chars_to_replace[i])
-                
             #for i in range(char_counter):
             new_title = new_title.replace(chars_to_replace[i],target)
+
 
         """
         GLEXI_COUNT = new_title.count(GLEXI)
@@ -185,6 +185,7 @@ def create_entries(site,page,target,chars_to_replace):
             main_entry = title
 
             
+
             #target_COUNT = title.count(target)
 
             for i in range(len(chars_to_replace)):
@@ -192,12 +193,15 @@ def create_entries(site,page,target,chars_to_replace):
                 #for j in range(target_COUNT):
                 title = title.replace(target,chars_to_replace[i])
 
+
                 #replace each variant j with variant i, for j != i
                 for j in range(len(chars_to_replace)):
                     if chars_to_replace[j] != chars_to_replace[i]:
+
                         #char_COUNT = title.count(chars_to_replace[j])
                         #for k in range(char_COUNT):
                         title = title.replace(chars_to_replace[j],chars_to_replace[i])
+
 
             
                 new_page = pywikibot.Page(site, title)

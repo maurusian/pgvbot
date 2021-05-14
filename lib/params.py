@@ -50,6 +50,7 @@ POTENTIAL_DUPLICATE_TEMPLATE = u'لپاج [[{}]] تقدر تكون مضوبلة'
 CHAR_FOUND_ON_PAGE_MESSAGE_TEMPLATE = u'لحرف {} تّلقا ف لپاج [[{}]]'
 
 
+
 MOVE_TEXT = u'#تحويل' #code start in transfer page
 FILE_CODE_START_TEXT = 'ملف:' #code start in file code
 AUDIO_ARTICLE_TAG_TEXT = 'مقال_مهضور' #tag for audio article
