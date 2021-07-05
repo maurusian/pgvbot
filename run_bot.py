@@ -2,7 +2,7 @@ from lib.pgvbotLib import *
 import pywikibot
 from copy import deepcopy
 from sys import argv
-from custom_pool import page_list
+from data.custom_pool import page_list
 
 
 def validate_args(args):
