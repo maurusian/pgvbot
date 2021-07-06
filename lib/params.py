@@ -52,6 +52,7 @@ CHAR_FOUND_ON_PAGE_MESSAGE_TEMPLATE = u'لحرف {} تّلقا ف لپاج [[{}]
 
 
 MOVE_TEXT = u'#تحويل' #code start in transfer page
+MOVE_TEXT_EN = "#REDIRECT"
 DISAMB_TAG = u"{{توضيح}}" #tag for disambiguation page
 FILE_CODE_START_TEXT = 'ملف:' #code start in file code
 AUDIO_ARTICLE_TAG_TEXT = 'مقال_مهضور' #tag for audio article
