@@ -351,7 +351,7 @@ def validate_page(page):
     valid for treatment
     """
 
-    if page.title() in IGNORE_LIST or MOVE_TEXT in page.text:
+    if page.title() in IGNORE_LIST or page.isRedirectPage() or DISAMB_TAG in page.text:
         return False
 
 

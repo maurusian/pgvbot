@@ -5,21 +5,36 @@ Language: Python3.9
 
 Purpose: Wikipedia Bot
 
-This bot was created to fulfill a specific need in the [Moroccan Darija Wikipedia](https://ary.wikipedia.org/wiki/%D8%A7%D9%84%D8%B5%D9%81%D8%AD%D8%A9_%D8%A7%D9%84%D9%84%D9%91%D9%88%D9%84%D8%A7). Its functionalities however could be generalized to other projects. The details are explained below. Given that a G sound exists in Moroccan Darija, but not in Standard Arabic, a corresponding letter is needed to represent that sound. Unfortunately, since Moroccan Darija has yet to be standardized, there's no consensus on which G character to use, considering that there are several commonly used:
+This bot was created to fulfill a specific need in the [Moroccan Darija Wikipedia](https://ary.wikipedia.org/wiki/%D8%A7%D9%84%D8%B5%D9%81%D8%AD%D8%A9_%D8%A7%D9%84%D9%84%D9%91%D9%88%D9%84%D8%A7). Its functionalities however could be generalized to similar tasks (character replacement) on other projects. The details are explained below.
 
+## Task description
+Given that a G sound (as in English "gap") exists in Moroccan Darija, but not in Standard Arabic, a corresponding letter is needed to represent that sound. Unfortunately, since Moroccan Darija has yet to be standardized, there's no consensus on which G character to use, considering that there are several commonly used:
+
+Main list
 - GLEXI = 'ڭ' - G character found on https://www.lexilogos.com/clavier/araby.htm
 - GCLAV = 'ݣ' - G character found on many Moroccan keyboards
 - GFARS = 'گ' - Farsi G
-- GSTRA = 'ڴ' - Strange G character combining the forms of GFARS and GCLAV, who the hell made this shit?
+
+Secondary list
+- GSTRA = 'ڴ' Strange G character combining GFARS and GCLAV, who the hell made this shit?
+- GMAST = 'ڲ' Another strange-looking G character, kinda reminds me of a mastodon
+- GBART = 'ڮ' G character with a beard
+- GDEVI = 'ػ' The devil himself wouldn't think of this
+- GFAKE = 'چ' This is not even G, it's a tch sound in Farsi, what's wrong with you people?!
+
+There's a similar, though less problematic situation, with V = ڤ and P = پ. Their alternatives are however so rarely used, that they are only corrected manually or with a special bot task (so far run only once).
 
 The bot performs 3 main tasks:
 
-- In-text replacement of G characters with the target G character which has been agreed upon
+- In-text replacement of G characters with the target G character which has been agreed upon (at the moment GCLAV)
 - Moving pages with an incorrect G character in the title, to a new title that has the target G
 - Adding entries to the same page with other variants of G in the title
 
+For the main list, all 3 tasks are performed. For the secondary list, only moving the page and in-text replacement are performed.
+
 As a side functionality, the bot also corrects the issue of serial redirects (redirects leading to redirects), by making sure all redirect pages lead to the main entry.
-The bot should also be able to handle the same process for variants of V and P (see **Future development** section)
+
+Finally, a special category page is used by the bot to ignore pages where it is necessary to use one or the other character (for example a page about Farsi which would list its letters), or where such maintenance can be risky as it could break the code (main page for instance).
 
 ## How to run:
 If you're an admin on a Moroccan Darija Wiki project:
@@ -52,11 +67,12 @@ The options do not have to be provided seperately. They can for example be writt
 
 ## Future development:
 
-### Urgent:
-- Find out if P and V need a similar treatment. For this purpose, build a task that explores the character set on ARY Wikipedia.
+### More Urgent
+- Ignore-category should be a hidden category, and the ignore function should be adapted accordingly (using page.categories() instead of in-text search)
+- More granular categories, to ignore specific characters but not other ones
+- Moving and adding redirects to categories and templates that have G character in the title (so far only content pages were handled)
 
-
-### Non-urgent:
+### Less Urgent
 - Improving logging, especially calls and formatting.
 - More flexible choice of number of last edited pages or time period. The bot could also save the last run-time, and run only for pages changed from that time.
 
@@ -65,4 +81,4 @@ If you want to build a similar bot for another Wiki project, and you want to use
 
 You may theoretically only need to adjust the parameter values in params.py, and do some minor adjustments in run-bot.py and run-bot*.bat. The details however would depend on what you exactly want to do, and on the specifities of your Wiki project and the endemic properties of your language.
 
-For any questions regarding the usage of this bot, or any related requests, please add your question on the [Talk Page](https://ary.wikipedia.org/wiki/%D9%86%D9%82%D8%A7%D8%B4_%D8%A7%D9%84%D9%85%D8%B3%D8%AA%D8%AE%D8%AF%D9%85:Ideophagous). Feel free to write in Moroccan Darija, English, French, German or Arabic.
+For any questions regarding the usage of this bot, or any related requests, please add your question on the [Talk Page](https://ary.wikipedia.org/wiki/%D9%86%D9%82%D8%A7%D8%B4_%D8%A7%D9%84%D9%85%D8%B3%D8%AA%D8%AE%D8%AF%D9%85:Ideophagous).
