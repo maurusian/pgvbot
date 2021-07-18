@@ -6,7 +6,7 @@ GSTRA = 'ڴ' #Strange G character combining GFARS and GCLAV, who the hell made t
 GMAST = 'ڲ' #Another strange-looking G character, kinda reminds me of a mastodon
 GBART = 'ڮ' #G character with a beard
 GDEVI = 'ػ' #The devil himself wouldn't think of this
-GFAKE = 'چ' #This is not even G, it's a tch sound, what's wrong with you people?!
+GFAKE = 'چ' #This is not even G, it's a tch sound in Farsi, what's wrong with you people?!
 
 #V
 VLEXI = 'ڤ' #V character found on https://www.lexilogos.com/clavier/araby.htm
@@ -22,13 +22,13 @@ PGOAT = 'ٻ' #P with a goatee
 #Other
 FMOOR = 'ڢ' #The only F you should want to bring back
 HFROZ = 'ھ' #H stuck mid-transformation
-ZWHAT = 'ژ' #I have no idea what this is supposed to be, a Z maybe?
+ZWHAT = 'ژ' #Emphatic Z, cuz we are emphantic ans shit
 KCLAV = 'ک' #The cousin of GCLAV, except she's boring and ugly
 ZNORM = 'ز' #Good old fashioned Z
 KNORM = 'ك' #K, the boring kind, *yawns*
 YFARS = 'ی' #Y used in Persian I think
-YNORM = 'ي' #Normal Arabic y letter
-SPACE = ' ' #a single space character
+YNORM = 'ي' #Normal Arabic Y letter
+SPACE = ' ' #A single space character, nothing special here
 
 
 #ALL_PAGES_OPTION = 'a'
