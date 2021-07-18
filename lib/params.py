@@ -27,7 +27,8 @@ KCLAV = 'ک' #The cousin of GCLAV, except she's boring and ugly
 ZNORM = 'ز' #Good old fashioned Z
 KNORM = 'ك' #K, the boring kind, *yawns*
 YFARS = 'ی' #Y used in Persian I think
-YNORM = 'ي'
+YNORM = 'ي' #Normal Arabic y letter
+SPACE = ' ' #a single space character
 
 
 #ALL_PAGES_OPTION = 'a'
@@ -65,6 +66,6 @@ LOG_LINE_MESSAGE = u'پڭڤبوت زاد سطر ف لّوڭ' #comment for log en
 REDIRECT_PAGE_CAT_CODE = '[[تصنيف:تحويلات مقالات]]' #category code for transfer page
 
 IGNORE_LIST = ['الصفحة اللّولا'] #list of pages to be completely ignored by the bot, for all tasks
-PAGE_TYPE_IGNORE_LIST = ['قالب','تصنيف','ويكيپيديا','إدارة','قيسارية','نقاش:قيسارية','مستخدم','نقاش المستخدم','باب','نقاش ويكيپيديا','نقاش','نقاش التصنيف'] #list of page types to be completely ignored by the bot, for all tasks
+PAGE_TYPE_IGNORE_LIST = ['قالب','تصنيف','ويكيپيديا','إدارة','قيسارية','نقاش قيسارية','مستخدم','نقاش المستخدم','باب','نقاش ويكيپيديا','نقاش','نقاش التصنيف','نقاش القالب'] #list of page types to be completely ignored by the bot, for all tasks
 INTEXT_LINE_IGNORE_LIST = ['[[قالب:','{{معلومات مانڭا}}','{{قالب:','[[تصنيف:','{{مقال_مهضور'] #list of sequences for which a line should be ignored for intext replacement, if found
 CATEGORY_IGNORE_LIST = ['تصنيف:ليستة د تجاهل ديال پكڤبوت'] #list of categories of pages that will be ignored for intext replacement
