@@ -1,5 +1,5 @@
 import pywikibot, sys
-from lib.params import *
+from params import *
 from datetime import datetime
 import urllib
 
