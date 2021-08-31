@@ -30,6 +30,9 @@ YFARS = 'ی' #Y used in Persian I think
 YNORM = 'ي' #Normal Arabic Y letter
 SPACE = ' ' #A single space character, nothing special here
 
+#NAMESPACES
+ARTICLE_NAMESPACE = 0
+
 
 #ALL_PAGES_OPTION = 'a'
 LAST_PAGES_OPTION = 'l' #run for last changed pages
@@ -69,3 +72,112 @@ IGNORE_LIST = ['الصفحة اللّولا'] #list of pages to be completely ig
 PAGE_TYPE_IGNORE_LIST = ['قالب','تصنيف','ويكيپيديا','إدارة','قيسارية','نقاش قيسارية','مستخدم','نقاش المستخدم','باب','نقاش ويكيپيديا','نقاش','نقاش التصنيف','نقاش القالب'] #list of page types to be completely ignored by the bot, for all tasks
 INTEXT_LINE_IGNORE_LIST = ['[[قالب:','{{معلومات مانڭا}}','{{قالب:','[[تصنيف:','{{مقال_مهضور'] #list of sequences for which a line should be ignored for intext replacement, if found
 CATEGORY_IGNORE_LIST = ['تصنيف:ليستة د تجاهل ديال پكڤبوت'] #list of categories of pages that will be ignored for intext replacement
+
+
+
+####DarijaBot constants#########
+
+
+##############################################Stub tag treatment##############################################
+###Tags
+OLD_STUB_TAG = "{{بذرة}}"
+NEW_STUB_TAG = "{{زريعة}}"
+
+###Save messages
+CORRECT_STUB_TAG_MESSAGE = "إصلاح طّاڭ د زريعة."
+ADD_STUB_TAG_MESSAGE = "زيادة د طّاڭ د زريعة."
+REMOVE_STUB_TAG_MESSAGE = "تحياد طّاڭ د زريعة."
+
+##############################################Source header treatment##############################################
+###Header patterns
+ACCEPTED_SECTION_HEADER_PATTERN = "==\s*عيون\s*لكلام\s*=="
+FAULTY_SOURCE_SECTION_HEADERS = ["\\=\\=\s*[ل]{0,1}عيون\s*د\s*لكلام\s*\\=\\="
+                                ,"\\=\\=\s*[ل]{0,1}عين\s*[د]{0,1}\s*لكلام\s*\\=\\="
+                                ,"\\=\\=\s*[ا]{0,1}[ل]{0,1}مصاد[ي]{0,1}ر\s*\\=\\="
+                                ,"\\=\\=\s*[ا]{0,1}[ل]{0,1}م[ا]{0,1}راج[ي]{0,1}ع\s*\\=\\="
+                                ,"\\=\\=\s*[ا]{0,1}[ل]{0,1}مصدر\s*\\=\\="
+                                ,"\\=\\=\s*[ا]{0,1}[ل]{0,1}مرجع\s*\\=\\="
+                                ,"\\=\\=\s*[ل]{0,1}عيون\s*\\=\\="
+                                ,ACCEPTED_SECTION_HEADER_PATTERN
+                                ]
+                                #,"==\s*عيون\s*لكلام\s*=="]
+SECTION_HEADER = "== عيون لكلام =="
+
+###Save messages
+CORRECT_SOURCE_HEADER_MESSAGE = "إصلاح لهادر د عيون لكلام."
+ADD_SOURCE_HEADER_MESSAGE = "زيادة د لهادر د عيون لكلام."
+
+
+
+##############################################Source tag treatment##############################################
+###Tags
+OLD_SOURCE_TAG1 = "{{مراجع}}"
+OLD_SOURCE_TAG2 = "<\s*references\s*/>"
+NEW_SOURCE_TAG = "{{عيون}}"
+
+###Save messages
+CORRECT_SOURCE_TAG_MESSAGE = "إصلاح طّاڭ د عيون لكلام."
+ADD_SOURCE_TAG_MESSAGE ="زيادة د طّاڭ د عيون لكلام."
+
+##############################################No category tag treatment##############################################
+###Tags
+NO_CATEGORY_TAG = "{{مقالة ما مصنفاش}}"
+
+###Save messages
+ADD_NO_CAT_TAG_MESSAGE = 'طاڭ ديال "مقالة مامصنفاش" تزاد.'
+REMOVE_NO_CAT_TAG_MESSAGE = 'طاڭ ديال "مقالة مامصنفاش" تحيّد.'
+
+##############################################No backlinks tag treatment##############################################
+###Tags
+ORPHANED_PAGE_TAG = "{{مقالة مقطوعة من شجرة}}"
+
+###Save messages
+ADD_ORPHAN_TAG_MESSAGE = 'طاڭ ديال "مقطوعة من شجرة" تزاد.'
+REMOVE_ORPHAN_TAG_MESSAGE = 'طاڭ ديال "مقطوعة من شجرة" تحيّد.'
+
+
+##############################################Authority Control tag##############################################
+###Tags
+OLD_AUTHORITY_CONTROL_TAG = "{{ضبط استنادي}}"
+NEW_AUTHORITY_CONTROL_TAG = "{{ضبط مخازني}}"
+
+###Save messages
+FIX_AUTHORITY_CONTROL_TAG = "طّاڭ ديال ضبط مخازني تصلح"
+ADD_AUTHORITY_CONTROL_TAG = "طّاڭ ديال ضبط مخازني تزاد"
+
+
+##############################################Deadend tag##############################################
+###Tags
+CUL_DE_SAC_TAG = "{{مقالة زنقة ماكاتخرجش}}"
+
+###Save messages
+
+##############################################No sources tag##############################################
+###Tags
+NO_SOURCES_ON_PAGE_TAG = "{{مقالة ناقصينها عيون لكلام}}"
+
+###Save messages
+
+
+##############################################Empty paragraph tag##############################################
+###Tags
+EMPTY_PARAGRAPH_TAG = "{{فقرة مازالا خاوية ولا ناقصة}}"
+
+###Save messages
+
+##############################################OTHER STRUCTURES##############################################
+###Tags
+INFOBOX_TAG_PATTERN = r"{{معلومات.*}}"
+
+MONTHS = [{"en_name":"January","ary_name":u"يناير","day_count":31,"alt_name":""}
+         ,{"en_name":"February","ary_name":u"فبراير","day_count":29,"alt_name":u"يبراير"}
+         ,{"en_name":"March","ary_name":u"مارس","day_count":31,"alt_name":""}
+         ,{"en_name":"April","ary_name":u"أبريل","day_count":30,"alt_name":""}
+         ,{"en_name":"May","ary_name":u"ماي","day_count":31,"alt_name":""}
+         ,{"en_name":"June","ary_name":u"يونيو","day_count":30,"alt_name":""}
+         ,{"en_name":"July","ary_name":u"يوليوز","day_count":31,"alt_name":""}
+         ,{"en_name":"August","ary_name":u"غشت","day_count":31,"alt_name":""}
+         ,{"en_name":"September","ary_name":u"شتنبر","day_count":30,"alt_name":""}
+         ,{"en_name":"October","ary_name":u"أكتوبر","day_count":31,"alt_name":u"كتوبر"}
+         ,{"en_name":"November","ary_name":u"نونبر","day_count":30,"alt_name":""}
+         ,{"en_name":"December","ary_name":u"دجنبر","day_count":31,"alt_name":""}]
