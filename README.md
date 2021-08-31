@@ -71,6 +71,7 @@ The options do not have to be provided seperately. They can for example be writt
 - Ignore-category should be a hidden category, and the ignore function should be adapted accordingly (using page.categories() instead of in-text search)
 - More granular categories, to ignore specific characters but not other ones
 - Moving and adding redirects to categories and templates that have G character in the title (so far only content pages were handled)
+- Handling namespaces in general. An option should be added to specify the namespace(s) for which the bot should run. The main loop would have to be adapted to run over a list of pools (one per namespace) instead of a single pool.
 
 ### Less Urgent
 - Improving logging, especially calls and formatting.
