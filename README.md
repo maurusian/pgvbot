@@ -68,13 +68,13 @@ The options do not have to be provided seperately. They can for example be writt
 ## Future development:
 
 ### More Urgent
+- Improve tests so the process becomes quicker. DarijaBot handles namespace 0 way better and smoother at this point.
 - Ignore-category should be a hidden category, and the ignore function should be adapted accordingly (using page.categories() instead of in-text search)
 - More granular categories, to ignore specific characters but not other ones
 - Moving and adding redirects to categories and templates that have G character in the title (so far only content pages were handled)
 - Handling namespaces in general. An option should be added to specify the namespace(s) for which the bot should run. The main loop would have to be adapted to run over a list of pools (one per namespace) instead of a single pool.
 
 ### Less Urgent
-- Improving logging, especially calls and formatting.
 - More flexible choice of number of last edited pages or time period. The bot could also save the last run-time, and run only for pages changed from that time.
 
 ## Using code for other projects
