@@ -27,7 +27,7 @@ def pool_run(site, pool, target, list_to_replace1, list_to_replace2, option_stri
     for page in pool:
         print('*********'+str(i)+'/'+str(pool_size))
         
-        if validate_page(page):
+        if not page.isRedirectPage():
             
                 
             if REPLACE_FUNC_OPTION in option_string and validate_page_text(page):
@@ -94,8 +94,10 @@ if __name__ == '__main__':
             pool = [pywikibot.Page(site, title.strip()) for title in page_list.strip().split()]
             
         else:
+
             #load all pages on the article namespace, default option
             pool = site.allpages(namespace=ARTICLE_NAMESPACE)
+
 
         pool_size = len(list(deepcopy(pool)))
         print('Pool size: '+str(pool_size))
