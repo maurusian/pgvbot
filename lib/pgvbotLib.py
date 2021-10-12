@@ -315,6 +315,15 @@ def log_write(site,message):
     save_page(user_page,LOG_LINE_MESSAGE)
     #user_page.save(LOG_LINE_MESSAGE)
 
+def log_error(LOG_PAGE_TITLE,log_message,save_log_message,site):
+    log_page = pywikibot.Page(site, LOG_PAGE_TITLE)
+    if log_page.text != '':
+        log_page.text += '\n* '+log_message
+    else:
+        log_page.text = '* '+log_message
+
+    log_page.save(save_log_message)
+
 def fix_redirects(site,page,target,chars_to_replace):
     """
     Corrects redirect issues, such as serial redirects
