@@ -94,8 +94,10 @@ if __name__ == '__main__':
             pool = [pywikibot.Page(site, title.strip()) for title in page_list.strip().split()]
             
         else:
-            #load all pages, default option
-            pool = site.allpages(namespace=0) #article namespace
+
+            #load all pages on the article namespace, default option
+            pool = site.allpages(namespace=ARTICLE_NAMESPACE)
+
 
         pool_size = len(list(deepcopy(pool)))
         print('Pool size: '+str(pool_size))
