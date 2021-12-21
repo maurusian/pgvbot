@@ -3,6 +3,19 @@ import pywikibot
 from copy import deepcopy
 from sys import argv
 from data.custom_pool import page_list
+import os
+
+RECENT_LOG_FILE = "recent_log.txt"
+
+def load_pages_in_log():
+    if not os.path.exists(RECENT_LOG_FILE):
+        return []
+    with open(RECENT_LOG_FILE,'r',encoding='utf-8') as f:
+        page_name_list = f.read().strip().splitlines()
+    
+    for i in range(len(page_name_list)):
+        page_name_list[i] = page_name_list[i].strip()
+    return page_name_list
 
 
 def validate_args(args):
@@ -24,43 +37,46 @@ def pool_run(site, pool, target, list_to_replace1, list_to_replace2, option_stri
     """
     i = 1
     pool_size = len(list(deepcopy(pool)))
-    for page in pool:
-        print('*********'+str(i)+'/'+str(pool_size))
-        
-        if not page.isRedirectPage():
+    pages_in_log = load_pages_in_log()
+    with open(RECENT_LOG_FILE,'a',encoding='utf-8') as f:
+        for page in pool:
+            print('*********'+str(i)+'/'+str(pool_size))
             
+            if str(page.title()) not in pages_in_log and validate_page(page):
                 
-            if REPLACE_FUNC_OPTION in option_string and validate_page_text(page):
-                #call sub program to replace in text
-                print(REPLACE_FUNC_OPTION)
                     
-                r_page, counters = get_updated_page(page,target,list_to_replace1)
-                    
-                if r_page is not None:
-                    save_page(r_page,G_TEXT_REPLACE_MESSAGE_TEMPLATE.format(counters[0],list_to_replace1[0],counters[1],list_to_replace1[1]))
-                else:
-                    print("no change from list 1")
+                if REPLACE_FUNC_OPTION in option_string and validate_page_text(page):
+                    #call sub program to replace in text
+                    print(REPLACE_FUNC_OPTION)
+                        
+                    r_page, counters = get_updated_page(page,target,list_to_replace1)
+                        
+                    if r_page is not None:
+                        save_page(r_page,G_TEXT_REPLACE_MESSAGE_TEMPLATE.format(counters[0],list_to_replace1[0],counters[1],list_to_replace1[1]))
+                    else:
+                        print("no change from list 1")
 
-                r_page, counters = get_updated_page(page,target,list_to_replace2)
+                    r_page, counters = get_updated_page(page,target,list_to_replace2)
+                        
+                    if r_page is not None:
+                        save_page(r_page,G_TEXT_REPLACE_MESSAGE_TEMPLATE.format(counters[0],list_to_replace2[0],counters[1],list_to_replace2[1]))
+                    else:
+                        print("no change from list 2")
+                        
+                if MOVE_FUNC_OPTION in option_string:
+                        
+                    #call sub program to move pages
+                    page = move_page(site,page,target,list_to_replace1)
+                    page = move_page(site,page,target,list_to_replace2)
                     
-                if r_page is not None:
-                    save_page(r_page,G_TEXT_REPLACE_MESSAGE_TEMPLATE.format(counters[0],list_to_replace2[0],counters[1],list_to_replace2[1]))
-                else:
-                    print("no change from list 2")
-                    
-            if MOVE_FUNC_OPTION in option_string:
-                    
-                #call sub program to move pages
-                page = move_page(site,page,target,list_to_replace1)
-                page = move_page(site,page,target,list_to_replace2)
-                
-            if ENTRIES_FUNC_OPTION in option_string:
-                #call sub program to add new entries to each page
+                if ENTRIES_FUNC_OPTION in option_string:
+                    #call sub program to add new entries to each page
 
-                create_entries(site,page,target,list_to_replace1)
-                fix_redirects(site,page,target,list_to_replace1)
-
-        i+=1
+                    create_entries(site,page,target,list_to_replace1)
+                    fix_redirects(site,page,target,list_to_replace1)
+            
+            i+=1
+            f.write(page.title()+'\n')
 
 
 if __name__ == '__main__':
